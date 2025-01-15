@@ -1,0 +1,387 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title id="title">Authorization granted</title>
+    <link rel="canonical" href="https://www.manageengine.com/ems/OAuthAuthorization.html" />
+
+    <style>
+        .get-start-title {
+            font-size: 22px;
+
+            color: #333;
+        }
+
+        .get-start-body-text {
+            color: #000;
+
+            font-family: "Lato", sans-serif;
+
+            font-size: 14px;
+
+            font-weight: 400;
+        }
+
+        .get-start-config-desc {
+            font-size: 15px;
+
+            line-height: 25px;
+
+            padding-top: 10px;
+
+            padding-bottom: 10px;
+
+            color: #555;
+
+            text-rendering: geometricPrecision;
+        }
+
+        .primaryActionBtn {
+            min-width: 60px;
+
+            width: auto;
+
+            height: 30px;
+
+            padding: 0px 20px;
+
+            -webkit-border-radius: 3px;
+
+            -moz-border-radius: 3px;
+
+            border-radius: 0px;
+
+            font-family: "Lato", sans-serif;
+
+            margin-right: 5px;
+
+            cursor: pointer;
+        }
+
+        .primaryActionBtn,
+        .primaryActionBtn:active {
+            border: solid 1px #4a8ac6;
+
+            background-color: #4a8ac6 !important;
+
+            color: #fff;
+
+            text-align: center;
+
+            font-size: 13px;
+
+            margin-bottom: 3px !important;
+
+            box-sizing: border-box !important;
+        }
+
+        .primaryActionBtn:hover {
+            width: auto;
+
+            border: 1px solid #4a8ac6;
+
+            cursor: pointer;
+        }
+
+        .primaryActionBtn:active,
+        .primaryActionBtn:focus {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
+        }
+
+        .centerImgBig {
+            width: 50px;
+
+            height: 50px;
+
+            margin-top: 5px;
+        }
+
+        .centerDisplayDiv {
+            width: 600px;
+
+            background-color: #fff;
+
+            padding: 20px;
+
+            margin: auto;
+
+            height: auto;
+
+            margin-top: 10%;
+        }
+
+        .backgroundWhite {
+            background-color: #fff;
+        }
+
+        .marginTop {
+            margin-top: 10px;
+        }
+
+        .backgroundGrey {
+            background-color: #f5f5f5;
+        }
+
+        .logo_org {
+            background-repeat: no-repeat;
+
+            background-size: contain;
+
+            max-width: 500px;
+
+            cursor: pointer;
+
+            display: block;
+
+            float: left;
+
+            margin-bottom: 10px;
+
+            max-width: 240px;
+        }
+
+        .code-display-block {
+            display: grid;
+            grid-template-areas: "input button"
+                "message ..";
+
+            gap: 0.5rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .code-display-block #auth-code {
+            display: block;
+            padding: 0.5rem;
+            border-radius: 0.3rem;
+            border: 1px solid #4a8ac6;
+            cursor: text;
+            min-width: 370px;
+
+            grid-area: input;
+        }
+
+        .copy-code-button {
+            display: block;
+            border: none;
+            padding: 0.5rem;
+            color: #4a8ac6;
+            border: 1px solid #4a8ac6;
+            background-color: #fff;
+            border-radius: 0.3rem;
+            cursor: pointer;
+
+            transition: 250ms ease;
+
+            grid-area: button;
+        }
+
+        .copy-code-button:hover,
+        .copy-code-button:focus {
+            border: 1px solid #004a8f;
+            color: white;
+            background-color: #4a8ac6;
+        }
+
+        #copy-status-message {
+            display: none;
+            font-size: small;
+            color: green;
+
+            grid-area: message;
+        }
+    </style>
+
+    <script type="text/javascript" src="https://www.manageengine.com/js/ipcallback-new.js"></script>
+</head>
+
+<body class="get-start-body-text backgroundGrey">
+    <table height="600px" width="100%">
+        <tr height="5%" class="backgroundWhite"></tr>
+
+        <tr height="85%">
+            <td>
+                <div class="centerDisplayDiv">
+                    <table cellpadding="5" width="100%">
+                        <tr style="vertical-align: top">
+                            <td>
+                                <center>
+                                    <img id="sucessImg"
+                                        src="https://www.manageengine.com/mobile-device-management/images/sucess.png"
+                                        class="centerImgBig" /><img id="failureImg"
+                                        src="https://www.manageengine.com/mobile-device-management/images/error_new.png"
+                                        class="centerImgBig" />
+                                </center>
+                            </td>
+                        </tr>
+
+                        <tr style="height: 5px"></tr>
+
+                        <tr>
+                            <td>
+                                <center><span class="get-start-title"></span></center>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <center>
+                                    <span class="get-start-config-desc" id="messageText">Loading...</span>
+                                </center>
+                            </td>
+                        </tr>
+
+                        <tr style="height: 20px"></tr>
+
+                        <tr>
+                            <td>
+                                <div class="code-display-block">
+                                    <input type="text" id="auth-code" disabled value="N/A">
+
+                                    <button class="copy-code-button" onclick="copyAuthCode()">
+                                        Copy
+                                    </button>
+
+                                    <span id="copy-status-message">
+                                        Authorization code has been copied! You may close this window.
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <center>
+                                    <span><input class="primaryActionBtn" id="closeButton" onclick="closeWindow()"
+                                            type="button" value="Close" /></span>
+                                </center>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <script>
+        var currentUrlObj = new URL(window.location.href);
+
+        var vars = Object.fromEntries(new URLSearchParams(currentUrlObj.search));
+
+        const codeDisplayBlock = document.querySelector('.code-display-block');
+
+        if (vars["code"]) {
+            var sucessImg = document.getElementById("sucessImg");
+
+            sucessImg.style.display = "block";
+
+            var failImg = document.getElementById("failureImg");
+
+            failImg.style.display = "none";
+
+            // setting this auth code as the value of a text input
+            const authCodeInputField = document.getElementById('auth-code');
+
+            authCodeInputField.value = vars['code'];
+
+            if (vars["state"]) {
+                document.getElementById("messageText").innerHTML =
+                    "Authentication successful. Please wait..";
+
+                document.getElementById("closeButton").style.visibility = "hidden";
+
+                codeDisplayBlock.style.display = "none";
+            }
+            else {
+                const messageTextElement = document.querySelector(".get-start-config-desc");
+                messageTextElement.innerText = "Copy the following authorization code:";
+            }
+        } else {
+            document.getElementById("title").innerText = "Authorization failed";
+
+            var sucessImg = document.getElementById("sucessImg");
+
+            sucessImg.style.display = "none";
+
+            var failImg = document.getElementById("failureImg");
+
+            failImg.style.display = "block";
+
+            var errorDec = vars["error_description"] + "";
+
+            var parsedErrorDec = errorDec;
+
+            parsedErrorDec = parsedErrorDec.replace(/\+/g, " ");
+
+            document.getElementById("messageText").innerHTML = parsedErrorDec;
+
+            codeDisplayBlock.style.display = "none";
+
+            const messageTextElement = document.querySelector(".get-start-config-desc");
+            messageTextElement.innerText = "Authorization Failed";
+        }
+
+        if (vars["state"]) {
+            var code = vars["code"];
+
+            var error = vars["error"];
+
+            var state = vars["state"];
+
+            var href = decodeUrlRecursively(state);
+
+            let urlContainsParams = false;
+            if (href.includes("?")) {
+                urlContainsParams = true;
+            }
+
+            if (code != null) {
+                if (urlContainsParams) {
+                    var url = href + "&code=" + code;
+                }
+                else {
+                    var url = href + "?code=" + code;
+                }
+            } else {
+                if (urlContainsParams) {
+                    var url = href + "&error_msg=" + error;
+                }
+                else {
+                    var url = href + "?error_msg=" + error;
+                }
+            }
+
+            codeDisplayBlock.style.display = "none";
+
+            location.href = url;
+        }
+
+        function decodeUrlRecursively(url) {
+            if (url.indexOf('%') != -1) {
+                url = decodeUrlRecursively(decodeURIComponent(url));
+            }
+            return url;
+        }
+
+        function closeWindow() {
+            window.open("about:blank", "_self").close();
+        }
+
+        function copyAuthCode() {
+            var copyText = document.getElementById("auth-code");
+
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+
+            navigator.clipboard.writeText(copyText.value);
+
+            const copyStatusMessage = document.getElementById('copy-status-message');
+            copyStatusMessage.style.display = "block";
+        }
+
+    </script>
+</body>
+
+</html>
